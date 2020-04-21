@@ -1,0 +1,52 @@
+spring:
+  cloud:
+    loadbalancer:
+      retry:
+        #启动负载均衡的重试机制，默认false
+        enabled: true
+
+server:
+  port: 8400
+
+
+eureka:
+  instance:
+    hostname: localhost
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client:
+    service-url:
+      defaultZone: http://admin:admin123@localhost:8761/eureka
+
+zuul:
+  add-host-header: true
+  retryable: true
+  routes:
+    eureka-demo:
+      path: /demo/*
+      serviceId: eureka-demo
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          #Hystrix是否启用超时时间
+          enabled: true
+        isolation:
+          thread:
+            #Hystrix断路器的超时时间，默认是1s，断路器的超时时间需要大于ribbon的超时时间，不然不会触发重试。
+            timeoutInMilliseconds: 2000
+
+ribbon:
+  #ribbon请求连接的超时时间
+  ConnectTimeout: 250
+  #请求处理的超时时间
+  ReadTimeout: 100
+  #对所有请求操作都进行重试
+  OkToRetryOnAllOperations: true
+  #对当前服务的重试次数（第一次分配给实例1的时候，如果404，则再重试MaxAutoRetries次，如果还是404，
+  #则切换到其他服务MaxAutoRetriesNextServer决定）
+  MaxAutoRetries: 2
+  #切换服务的次数(比如本次请求分配给实例1处理，发现404，则切换分配给实例2处理，如果还是404，则返回404给客户端）
+  MaxAutoRetriesNextServer: 1

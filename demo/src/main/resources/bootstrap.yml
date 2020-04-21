@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: eureka-demo
+server:
+  port: 8801
+
+
+

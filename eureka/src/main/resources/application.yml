@@ -1,0 +1,9 @@
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # 注册中心访问地址
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    enableSelfPreservation: false
